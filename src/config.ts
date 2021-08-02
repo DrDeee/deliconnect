@@ -9,10 +9,20 @@ export interface IConfiguration {
         autosaveInterval: number
     }
     port: number
-    oidcPublicKey: string
+    auth: {
+        oidcPublicKey: string
+        keycloakFullUrl: string
+        keycloakBaseUrl: string
+        realm: string
+        credentiels: {
+            user: string
+            password: string
+        }
+    }
     sessionTime: number
 
     cors: IStringStringMap
+    displayName: string // Used for 2fa
 }
 const log: Logger = getLogger('config')
 
@@ -22,24 +32,32 @@ const DEFAULT_CONFIG: IConfiguration = {
         autosaveInterval: 60
     },
     port: 80,
-    oidcPublicKey: 'SET IT HERE',
+    auth: {
+        oidcPublicKey: 'SET IT HERE',
+        keycloakFullUrl: 'http://localhost:8080/auth/realms/master',
+        keycloakBaseUrl: 'http://localhost:8080/auth',
+        realm: 'master',
+        credentiels: {
+            user: 'admin',
+            password: 'admin'
+        }
+    },
     sessionTime: 30,
-    cors: { 'Access-Control-Allow-Origin': '*' }
+    cors: {},
+    displayName: 'DeliConnect Demo'
 }
 
-let config: IConfiguration = DEFAULT_CONFIG
+let config: IConfiguration
 
+log.info('Loading config..')
 ensureFileSync('config.json')
 
-function loadConfig() {
-    const data = readJSONSync('config.json', { throws: false })
-    if (data == null) log.warn('Config not found. Creating new..')
-    config = (data == null ? DEFAULT_CONFIG : defaultsDeep(data, DEFAULT_CONFIG)) as IConfiguration
-    writeJSONSync('config.json', config, { spaces: 2 })
-    log.info('Config loaded.')
-}
+
+const data = readJSONSync('config.json', { throws: false })
+if (data == null) log.warn('Config not found. Creating new..')
+config = (data == null ? DEFAULT_CONFIG : defaultsDeep(data, DEFAULT_CONFIG)) as IConfiguration
+writeJSONSync('config.json', config, { spaces: 2 })
+log.info('Config loaded.')
+
 
 export default config
-export {
-    loadConfig
-}

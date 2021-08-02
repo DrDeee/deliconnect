@@ -73,3 +73,13 @@ export function updateSocialEntry(userId: string, type: SocialType, value: any) 
     })
     log.debug('Updated social entry for user: ' + userId)
 }
+
+export function setOTPSecretVerified(userID: string, verified: boolean = true) {
+    profiles.updateWhere((doc: IProfile) => doc.id === userID,
+        (doc: IProfile) => doc.additionalInfos.verified = verified)
+}
+
+export function setOTPSecret(userID: string, secret: string | undefined) {
+    profiles.updateWhere((doc: IProfile) => doc.id === userID,
+        (doc: IProfile) => doc.additionalInfos.otpSecret = secret)
+}

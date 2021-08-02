@@ -69,7 +69,7 @@ export default class AuthHandler {
 
     private verifyJWT(jwt: string): Optional<JwtPayload> {
         try {
-            const payload = verify(jwt, `-----BEGIN PUBLIC KEY-----\n${config.oidcPublicKey}\n-----END PUBLIC KEY-----`)
+            const payload = verify(jwt, `-----BEGIN PUBLIC KEY-----\n${config.auth.oidcPublicKey}\n-----END PUBLIC KEY-----`)
             return Optional.of(payload as JwtPayload)
         } catch (error) {
             return Optional.empty()

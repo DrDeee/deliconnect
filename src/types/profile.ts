@@ -12,6 +12,7 @@ export class AdditionalInfos {
     regio: boolean = false
 
     otpSecret?: string
+    verified: boolean = false
 }
 
 export default interface IProfile {
