@@ -7,12 +7,13 @@ interface ISocialInfo {
     discord?: number
 }
 
-export class AdditionalInfos {
+export class SecurityInfos {
     admin: boolean = false
     regio: boolean = false
 
+    deli: boolean = false
+
     otpSecret?: string
-    verified: boolean = false
 }
 
 export default interface IProfile {
@@ -22,5 +23,5 @@ export default interface IProfile {
 
     social: ISocialInfo
 
-    additionalInfos: AdditionalInfos
+    security: SecurityInfos
 }

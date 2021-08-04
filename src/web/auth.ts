@@ -4,7 +4,7 @@ import { Optional } from 'typescript-optional'
 import config from '../config'
 
 import * as db from '../database'
-import IProfile, { AdditionalInfos } from '../types/profile'
+import IProfile, { SecurityInfos } from '../types/profile'
 import { IStringStringListMap } from '../types/util'
 
 import { randomBytes } from 'crypto'
@@ -23,6 +23,7 @@ export default class AuthHandler {
         const sessionHeader = req.header('Auth-Session')
 
         if (authHeader && sessionHeader) {
+            req.session = sessionHeader
             const parts = authHeader.split(' ')
             if (parts.length != 2 || parts[0] !== 'Bearer')
                 return this.authFailed(res)
@@ -49,7 +50,7 @@ export default class AuthHandler {
                         social: {
                             email: payload.email
                         },
-                        additionalInfos: new AdditionalInfos()
+                        security: new SecurityInfos()
                     }
                     req.user = newProfile
                     db.insertProfile(newProfile)
@@ -89,4 +90,10 @@ export function createSession(user: string): string {
         sessions[user].filter(s => s === sessionString)
     }, config.sessionTime)
     return sessionString
+}
+
+export function destroySession(user: string, session: string) {
+    if (sessions[user] && sessions[user].includes(session)) {
+        sessions[user].splice(sessions[user].indexOf(session), 1)
+    }
 }

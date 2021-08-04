@@ -65,7 +65,7 @@ export function insertProfile(profile: IProfile) {
     log.debug(`Created new profile for user: ${profile.name} (${profile.id})`)
 }
 
-export function updateSocialEntry(userId: string, type: SocialType, value: any) {
+export function updateSocialEntry(userId: string, type: SocialType, value: string | number | any) {
     profiles.updateWhere(((doc: IProfile) => doc.id === userId), (doc: IProfile) => {
         if (!doc.social)
             doc.social = {}
@@ -74,12 +74,7 @@ export function updateSocialEntry(userId: string, type: SocialType, value: any) 
     log.debug('Updated social entry for user: ' + userId)
 }
 
-export function setOTPSecretVerified(userID: string, verified: boolean = true) {
-    profiles.updateWhere((doc: IProfile) => doc.id === userID,
-        (doc: IProfile) => doc.additionalInfos.verified = verified)
-}
-
 export function setOTPSecret(userID: string, secret: string | undefined) {
     profiles.updateWhere((doc: IProfile) => doc.id === userID,
-        (doc: IProfile) => doc.additionalInfos.otpSecret = secret)
+        (doc: IProfile) => doc.security.otpSecret = secret)
 }

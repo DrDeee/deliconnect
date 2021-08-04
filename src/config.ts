@@ -18,11 +18,23 @@ export interface IConfiguration {
             user: string
             password: string
         }
+        otpSetupTTL: number
     }
     sessionTime: number
 
+    social: {
+        codeTTL: number,
+        discord: {
+            id: number,
+            guildId: number
+            deliRole: number
+            botToken: string
+            autoRoles: number[]
+        }
+    }
     cors: IStringStringMap
     displayName: string // Used for 2fa
+    basePath: string
 }
 const log: Logger = getLogger('config')
 
@@ -40,11 +52,24 @@ const DEFAULT_CONFIG: IConfiguration = {
         credentiels: {
             user: 'admin',
             password: 'admin'
-        }
+        },
+        otpSetupTTL: 5
     },
     sessionTime: 30,
     cors: {},
-    displayName: 'DeliConnect Demo'
+    displayName: 'DeliConnect Demo',
+
+    social: {
+        codeTTL: 5 * 60,
+        discord: {
+            id: 0,
+            guildId: 746860017709482135,
+            deliRole: 872471971416399952,
+            botToken: 'asfasf',
+            autoRoles: []
+        }
+    },
+    basePath: 'http://localhost/api/v1/'
 }
 
 let config: IConfiguration

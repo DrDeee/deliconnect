@@ -1,8 +1,15 @@
 import { Router } from "express";
-import sessionHandler from "./session";
+import App from "../../app";
+import authRouter from './auth'
+import profileRouter from './profile'
 
-const router = Router()
+function router(app: App) {
+    const router = Router()
 
-router.use(sessionHandler)
+    router.use('/auth', authRouter)
+    router.use('/profile', profileRouter(app))
+
+    return router
+}
 
 export default router

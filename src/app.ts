@@ -10,7 +10,7 @@ export default class App {
     services: ServiceManager
     constructor() {
         this.web = new WebServer()
-        this.services = new ServiceManager(this)
+        this.services = new ServiceManager()
     }
 
     public async start() {
@@ -18,10 +18,10 @@ export default class App {
         db.load()
 
         log.info('Starting ServiceManager..')
-        await this.services.start()
+        await this.services.start(this)
 
         log.info('Starting webserver..')
-        await this.web.start()
+        await this.web.start(this)
 
         log.info('Application started.')
     }
