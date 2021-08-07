@@ -47,9 +47,7 @@ export default class AuthHandler {
                         id: payload.sub || '',
                         name: payload.preferred_username || '',
                         displayName: payload.name,
-                        social: {
-                            email: payload.email
-                        },
+                        social: {},
                         security: new SecurityInfos()
                     }
                     req.user = newProfile

@@ -8,7 +8,6 @@ import DiscordRoutes from "./social/discord";
 import matrixRoutes from './social/matrix'
 import telegramRoutes from './social/telegram'
 import whatsappRoutes from './social/whatsapp'
-import emailRoutes from './social/email'
 import App from "../../../app";
 
 function router(app: App) {
@@ -24,7 +23,6 @@ function router(app: App) {
     matrixRoutes.register(router, 'matrix')
     telegramRoutes.register(router, 'telegram')
     whatsappRoutes.register(router, 'whatsapp')
-    emailRoutes.register(router, 'email')
 
     return router
 }

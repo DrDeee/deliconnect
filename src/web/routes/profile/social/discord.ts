@@ -5,6 +5,7 @@ import DiscordService from "../../../../service/social/discord";
 
 import * as db from '../../../../database'
 import { strict } from "assert/strict";
+import AuthHandler from "../../../auth";
 
 interface IStringStateMap {
     [key: string]: {
@@ -71,17 +72,28 @@ export default class DiscordRoutes {
                 if (this.states[key].state === state) {
                     await this.service.initUser(db.getProfileById(key).get(), access_token as string, token_type as string)
                     delete this.states[key]
-                    res.render('discord', { error: false })
+                    res.render('discord', {
+                        error: false,
+                        message: 'Du hast deinen Discord-Account erfolgreich' +
+                            'mit deinem Cloud-Account verknüpft.',
+                        baseUrl: config.basePath
+                    })
                 }
             }
         } else {
-            res.render('discord', { error: true })
+            res.render('discord', {
+                error: true, message:
+                    `Beim Anmelden mit Discord ist ein Fehler aufgetreten!
+                     Bitte versuche es erneut.<br><br><em>Sollte der Fehler erneut
+                      auftreten, melde dies bitte an den Support</em>.`
+            })
         }
     }
 
     public register(router: Router, name: string) {
-        router.get('/' + name, this.get)
-        router.delete('/' + name, this.delete)
+        const auth = new AuthHandler().handler
+        router.get('/' + name, auth, this.get)
+        router.delete('/' + name, auth, this.delete)
         router.get('/' + name + '/return', this.callback)
     }
 }

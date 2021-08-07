@@ -78,3 +78,21 @@ export function setOTPSecret(userID: string, secret: string | undefined) {
     profiles.updateWhere((doc: IProfile) => doc.id === userID,
         (doc: IProfile) => doc.security.otpSecret = secret)
 }
+
+export function setRegio(userID: string, isRegio: boolean) {
+    profiles.updateWhere((doc: IProfile) => doc.id === userID, (doc: IProfile) => {
+        doc.security.regio = isRegio
+    })
+}
+
+export function setAdmin(userID: string, isAdmin: boolean) {
+    profiles.updateWhere((doc: IProfile) => doc.id === userID, (doc: IProfile) => {
+        doc.security.admin = isAdmin
+    })
+}
+
+export function setDeli(userID: string, isDeli: boolean) {
+    profiles.updateWhere((doc: IProfile) => doc.id === userID, (doc: IProfile) => {
+        doc.security.deli = isDeli
+    })
+}

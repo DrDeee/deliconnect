@@ -1,6 +1,5 @@
 
 interface ISocialInfo {
-    email?: string
     whatsapp?: string
     telegram?: string
     matrix?: string

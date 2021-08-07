@@ -7,6 +7,12 @@ import BaseService from "./base"
 
 const log = getLogger('keycloak')
 
+interface IUser {
+    id: string
+    name: string
+    email?: string
+}
+
 export default class KeycloakService implements BaseService {
     readonly name = 'Keycloak'
 
@@ -44,6 +50,32 @@ export default class KeycloakService implements BaseService {
         }, 58 * 1000)
 
         log.info('Logged in to Keycloak.')
+    }
+
+    async getUsers(): Promise<IUser[]> {
+        const users = await this.client?.users.find()
+        const ret: IUser[] = []
+        users?.forEach(user => {
+            ret.push({
+                id: user.id || '',
+                name: user.username || '',
+                email: user.email
+            })
+        })
+        return ret
+    }
+
+    async findUserById(id: string): Promise<IUser | null> {
+        const user = await this.client?.users.findOne({ id: id })
+        if (user) {
+            return {
+                id: user.id as string,
+                name: user.username as string,
+                email: user.email as string
+            }
+        } else {
+            return null
+        }
     }
 
     async stop(): Promise<any> {
